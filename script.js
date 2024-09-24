@@ -1,30 +1,44 @@
 function main(){
-    window.addEventListener("deviceorientation",onOrientationChange) //mobile sensor-accelerometer, gyroscope-listen to the device orientation, when it changes it trigers a call back function
-    
-    navigator.mediaDevices.getUserMedia({video:{
-        facingMode:'environment' //so we use the back camara
-}}) //we get user mide with video parameters  
-    .then(function(signal){ //call back function to call the signal 
-            const video=document.getElementById("myVideo");
-            video.srcObject=signal;
-            video.play();
-        })
-        .catch(function (err){
-            alert(err);
-        })
-}
+    console.log("Main function started");
 
-function onOrientationChange(event){//beta focuses on one axis of rotation, if the phone is facing you it would rotate towards you like a wheel
-    let angle=event.beta-90; //substract 90 from beta
-    if(angle<0){ // 0 to 90 degrees interval--->we dismiss any neative values to avoid contition
-        angle=0; //when phone in a table angle is 0, negative values ehn phone is upside down
+    // Check if device orientation is supported
+    if (window.DeviceOrientationEvent) {
+        console.log("DeviceOrientation supported");
+        window.addEventListener("deviceorientation", onOrientationChange);
+    } else {
+        console.log("Device orientation not supported on this device.");
+        alert("Device orientation not supported on this device.");
     }
 
-    const distToTree=document.getElementById("mySlider").value; //we need to know the distance
-    document.getElementById("myLabel").innerHTML=
-        "Distance to tree: "+distToTree+" meters"; //to know the distance so the value appears
-    const height=Math.tan(angle*Math.PI/180)*distToTree; //angle*Math.PI/180 in order to get angles and not radians, otherwise will get negative values
-    document.getElementById("heightInfo").innerHTML=
-        height.toFixed(1)+" m (" +angle.toFixed(1)+"&deg;)";
+    // Get user media (camera)
+    navigator.mediaDevices.getUserMedia({
+        video: { facingMode: 'environment' } // Back camera
+    })
+    .then(function(signal) {
+        console.log("Camera access granted");
+        const video = document.getElementById("myVideo");
+        video.srcObject = signal;
+        video.play();
+    })
+    .catch(function(err) {
+        console.error("Camera error: " + err);
+        alert("Camera error: " + err);
+    });
+}
 
+function onOrientationChange(event) {
+    console.log("Orientation changed: Beta = " + event.beta);
+
+    let angle = event.beta - 90;
+    if (angle < 0) {
+        angle = 0;
+    }
+
+    const distToTree = document.getElementById("mySlider").value;
+    document.getElementById("myLabel").innerHTML = 
+        "Distance to tree: " + distToTree + " meters";
+
+    const height = Math.tan(angle * Math.PI / 180) * distToTree;
+    document.getElementById("heightInfo").innerHTML =
+        height.toFixed(1) + " m (" + angle.toFixed(1) + "&deg;)";
 }
