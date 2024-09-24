@@ -1,0 +1,43 @@
+body{
+    margin:0;
+    text-align:center;
+    overflow:hidden;
+    font-size:25px;
+    font-family:Arial;
+    color:white;
+    text-shadow:0 0 4px #000, 0 0 4px #000;
+}
+
+#mySlider{
+    appearance:none;
+    width:90%;
+    height:35px;
+    background:#47f;
+    margin-top:35px;
+
+}
+
+#mySlider::-webkit-slider-thumb{
+    appearance:none;
+    width:35px;
+    height:35px;
+    background:white;
+}
+
+
+video{
+    position:absolute;
+    left:50%;
+    top:50%;
+    transform:translate(-50%,-50%); /*so that the bottom of this element is at the middle of the screen*/
+    z-index:-1;
+}
+
+#heightInfo{
+    position:absolute;
+    left:50%;
+    top:50%;
+    transform:translate(-50%,-100%); /*so that the bottom of this element is at the middle of the screen*/
+    border-bottom:3px solid white;
+    width:100%;
+}
